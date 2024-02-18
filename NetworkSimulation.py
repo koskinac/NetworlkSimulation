@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 class NetworkSimulation:
     def __init__(self, num_computers=8, max_queue_size=5):
+        # Constructor to initialize the NetworkSimulation object
         self.num_computers = num_computers
         self.max_queue_size = max_queue_size
         self.server_queue = []
@@ -11,11 +12,13 @@ class NetworkSimulation:
 
 
     def transmit(self, p):
+        # Simulates packet transmission in the network for a given probability p
         self.server_queue = [[] for _ in range(self.num_computers)]
         bad_slots_count = 0
         total_transmitted_packets = 0
         lost_packets_count = 0
 
+        # Count of the lost packets 
         for slot in range(1000): #Simulate 1000 slots
             for computer in range(self.num_computers):
                 if np.random.rand() < p:
@@ -24,6 +27,7 @@ class NetworkSimulation:
                     else:
                         lost_packets_count += 1
 
+            # Calculate if the packets are transmitted normaly or delayed 
             for computer in range(self.num_computers):
                 if self.server_queue[computer]:
                     total_transmitted_packets += 1
@@ -31,13 +35,15 @@ class NetworkSimulation:
                         bad_slots_count += 1
                         self.bad_slots.append(slot)
                     self.server_queue[computer].pop(0)
-        
+                    
+        # Calculate length of bad slots and rate of lost packets
         self.bad_slots.append(1000)
         self.bad_slots = np.diff(self.bad_slots).tolist()
         self.lost_packets.append(lost_packets_count / total_transmitted_packets)
         return bad_slots_count, lost_packets_count / total_transmitted_packets
     
     def calcualte_throughput(self, p):
+        # Calculates the throughput of the network for a given probability p
         total_transmitted_packets = 0
         for slot in range(1000):
             for computer in range(self.num_computers):
