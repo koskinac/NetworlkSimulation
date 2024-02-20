@@ -10,9 +10,8 @@ class NetworkSimulation:
         self.bad_slots = []
         self.lost_packets = []
 
-
+    # Simulates packet transmission in the network for a given probability p
     def transmit(self, p):
-        # Simulates packet transmission in the network for a given probability p
         self.server_queue = [[] for _ in range(self.num_computers)]
         bad_slots_count = 0
         total_transmitted_packets = 0
